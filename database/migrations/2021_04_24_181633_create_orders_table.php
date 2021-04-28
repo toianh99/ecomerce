@@ -17,11 +17,15 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->decimal('subTotal');
             $table->String('status');
+            $table->String('code_order')->unique();
             $table->integer('id_payment');
             $table->decimal('total');
+            $table->integer('id_shipment');
             $table->String('phone_number');
             $table->date('date_order');
             $table->integer('id_user');
+            $table->integer('id_address');
+            $table->String('node')->nullable();
             $table->timestamps();
         });
     }

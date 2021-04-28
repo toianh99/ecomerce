@@ -14,7 +14,7 @@ class WardController extends Controller
      */
     public function index()
     {
-        //
+       return response()->json(new JsonResponse(Ward::all()));
     }
 
     /**
