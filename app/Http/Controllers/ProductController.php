@@ -2,36 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Resources\ProductResource;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Product as Products;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+use Gate;
 
 class ProductController extends Controller
 {
     const ITEM_PER_PAGE = 15;
+    use MediaUploadingTrait;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $searchParams= $request->all();
-        //kiểm tra biết limit
-        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
-        //kiểm tra keyword search
-        $keyword=Arr::get($searchParams,'keyword','');
-        //gọi query product
-        $query=Products::query();
+//        $searchParams= $request->all();
+//        //kiểm tra biết limit
+//        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
+//        //kiểm tra keyword search
+//        $keyword=Arr::get($searchParams,'keyword','');
+//        //gọi query product
+//        $query=Products::query();
+//
+//        if (!empty($keyword)) {
+//            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
+//        }
+//        return  ProductResource::collection($query->paginate($limmit));
+        abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if (!empty($keyword)) {
-            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
-        }
-        return  ProductResource::collection($query->paginate($limmit));
+        $clients = Product::all();
+        return view('admin.product.index', compact('clients'));
     }
 
     /**
@@ -41,7 +52,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('product_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $categories=Category::all();
+        $brands=Brand::all();
+        return view('admin.product.create',compact('categories','brands'));
     }
 
     /**
@@ -52,6 +66,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+//        $params = $request->all();
+////        $test=$params['default_image'];
+//        print_r($params);
+//        die();
         $validator = Validator::make(
             $request->all(),
             [
@@ -72,13 +90,9 @@ class ProductController extends Controller
                 'brand_id'=>$params['brand_id'],
                 'category_id'=>$params['category_id'],
                 'default_image'=>$params['default_image'],
-                'image1'=>$params['image1'],
-                'image2'=>$params['image2'],
-                'image3'=>$params['image3'],
-                'image4'=>$params['image4'],
-                'overview'=>$params['overview'],
                 'description'=>$params['description'],
-                'status'=>1
+                'status'=>$params['status_id'],
+                'overview'=>$params['overview'],
             ]);
             return new ProductResource($product);
         }

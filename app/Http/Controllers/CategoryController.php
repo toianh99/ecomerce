@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Gate;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -18,18 +21,22 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $searchParams= $request->all();
-        //kiểm tra biết limit
-        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
-        //kiểm tra keyword search
-        $keyword=Arr::get($searchParams,'keyword','');
-        //gọi query product
-        $query=Category::query();
+//        $searchParams= $request->all();
+//        //kiểm tra biết limit
+//        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
+//        //kiểm tra keyword search
+//        $keyword=Arr::get($searchParams,'keyword','');
+//        //gọi query product
+//        $query=Category::query();
+//
+//        if (!empty($keyword)) {
+//            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
+//        }
+//        return CategoryResource::collection($query->paginate($limmit));
+        abort_if(Gate::denies('brand_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if (!empty($keyword)) {
-            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
-        }
-        return CategoryResource::collection($query->paginate($limmit));
+        $categories= Category::all();
+        return view('admin.category.index',compact('categories'));
     }
 
     /**
@@ -39,7 +46,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('category_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.category.create');
     }
 
     /**
@@ -48,27 +56,10 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name_category' => ['required'],
-                'description'=>['required']
-
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        } else {
-            $params=$request->all();
-            $category=Category::create([
-                'name_category'=>$params['name_category'],
-                'description'=>$params['description']
-            ]);
-
-            return new CategoryResource($category);
-        }
+        $category= Category::create($request->all());
+        return redirect()->route('category.index');
     }
 
     /**
@@ -77,9 +68,11 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category  $category)
     {
-        return  response()->json(new JsonResponse(Category::where('id',$id)->first()));
+//        return  response()->json(new JsonResponse(Category::where('id',$id)->first()));
+        abort_if(Gate::denies('category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.category.show',compact('category'));
     }
 
     /**
@@ -90,7 +83,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        abort_if(Gate::denies('category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.category.edit',compact('category'));
     }
 
     /**
@@ -100,24 +94,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name_category' => ['required'],
-                'description'=>['required']
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        } else {
-                $params=$request->all();
-                $category->name_category=$params['name_category'];
-                $category->description=$params['description'];
-                $category->save();
-                return response()->json(new JsonResponse($category));
-        }
+        $category->update($request->all());
+        return redirect()->route('category.index');
     }
 
     /**

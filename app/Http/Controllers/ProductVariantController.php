@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductVariantRequest;
+use App\Http\Requests\UpdateProductVariantRequest;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Gate;
 
 class ProductVariantController extends Controller
 {
@@ -14,7 +18,9 @@ class ProductVariantController extends Controller
      */
     public function index()
     {
-        //
+        abort_if(Gate::denies('product_variant_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $productVariants=ProductVariant::all();
+        return view('admin.productvariant.index',compact('productVariants'));
     }
 
     /**
@@ -24,7 +30,8 @@ class ProductVariantController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('product_variant_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.productvariant.create');
     }
 
     /**
@@ -33,9 +40,10 @@ class ProductVariantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductVariantRequest $request)
     {
-        //
+        $productVariant=ProductVariant::create($request->all());
+        return redirect()->route('product-variant.index');
     }
 
     /**
@@ -46,7 +54,8 @@ class ProductVariantController extends Controller
      */
     public function show(ProductVariant $productVariant)
     {
-        //
+        abort_if(Gate::denies('product_variant_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.productvariant.show',compact($productVariant));
     }
 
     /**
@@ -57,7 +66,8 @@ class ProductVariantController extends Controller
      */
     public function edit(ProductVariant $productVariant)
     {
-        //
+        abort_if(Gate::denies('product_variant_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.productvariant.edit',compact($productVariant));
     }
 
     /**
@@ -67,9 +77,10 @@ class ProductVariantController extends Controller
      * @param  \App\Models\ProductVariant  $productVariant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductVariant $productVariant)
+    public function update(UpdateProductVariantRequest $request, ProductVariant $productVariant)
     {
-        //
+        $productVariant->update($request->all());
+        return redirect()->route('product-variant.index');
     }
 
     /**

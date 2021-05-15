@@ -4,7 +4,17 @@ namespace App\Models;
 
 
 
-class Permission extends \Spatie\Permission\Models\Permission
-{
+use App\Role;
+use Illuminate\Database\Eloquent\Model;
 
+class Permission extends Model
+{
+    public $table = 'permissions';
+    protected $fillable=['title','description'];
+
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

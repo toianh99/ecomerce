@@ -14,23 +14,24 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'roles' => array_map(
-                function ($role) {
-                    return $role['name'];
-                },
-                $this->roles->toArray()
-            ),
-            'permissions' => array_map(
-                function ($permission) {
-                    return $permission['name'];
-                },
-                $this->getAllPermissions()->toArray()
-            ),
-            'avatar' => 'https://i.pravatar.cc',
-        ];
+//        return [
+//            'id' => $this->id,
+//            'name' => $this->name,
+//            'email' => $this->email,
+//            'roles' => array_map(
+//                function ($role) {
+//                    return $role['name'];
+//                },
+//                $this->roles->toArray()
+//            ),
+//            'permissions' => array_map(
+//                function ($permission) {
+//                    return $permission['name'];
+//                },
+//                $this->getAllPermissions()->toArray()
+//            ),
+//            'avatar' => 'https://i.pravatar.cc',
+//        ];
+        return parent::toArray($request);
     }
 }

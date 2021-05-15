@@ -163,6 +163,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         //permissions roles từ thư viện
         Spatie\Permission\PermissionServiceProvider::class,
+        //thư viện ckeditor
+
 
 
         /*
@@ -230,6 +232,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        //thư viện ảnh
+
 
     ],
 

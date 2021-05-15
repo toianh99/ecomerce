@@ -26,14 +26,35 @@ use App\Http\Controllers\CartController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::apiResource('product',ProductController::class);
-Route::apiResource('role',RoleController::class);
-Route::apiResource('category',CategoryController::class);
-Route::apiResource('brand',BrandController::class);
-Route::apiResource('province',ProvinceController::class);
-Route::apiResource('district',DistrictController::class);
-Route::apiResource('address',AddressController::class);
-Route::apiResource('ward',WardController::class);
+Route::get('/admin', function () {
+    return view('home');
+});
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+Route::Resource('product',ProductController::class)->middleware('auth');
+Route::Resource('roles',RoleController::class)->middleware('auth');
+//Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy')->middleware('auth');
+Route::Resource('category',CategoryController::class)->middleware('auth');
+Route::Resource('brand',BrandController::class)->middleware('auth');
+Route::Resource('province',ProvinceController::class);
+Route::Resource('district',DistrictController::class);
+Route::Resource('address',AddressController::class);
+Route::Resource('ward',WardController::class);
 Route::apiResource('order',OrderController::class);
 Route::apiResource('payment',PaymentController::class);
 Route::apiResource('cart',CartController::class);
+Route::apiResource('user',\App\Http\Controllers\UserController::class);
+Route::Resource('permission',\App\Http\Controllers\PermissionController::class)->middleware('auth');
+Route::Resource('product-color',\App\Http\Controllers\ProductColorController::class)->middleware('auth');
+Route::Resource('product-size',\App\Http\Controllers\ProductSizeController::class)->middleware('auth');
+Route::Resource('product-variant',\App\Http\Controllers\ProductVariantController::class)->middleware('auth');
+Route::get('/products',[ProductController::class,'indexs'])->middleware('auth');
+Route::get('/test',[\App\Http\Controllers\TestController::class,'index'])->middleware('auth');
+Route::post('/test',[\App\Http\Controllers\TestController::class,'create'])->middleware('auth')->name('test.create');
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

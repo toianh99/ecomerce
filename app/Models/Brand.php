@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     protected $fillable=['name_brand','description'];
-
     public function getId(){
         return $this->getAttribute('id');
     }

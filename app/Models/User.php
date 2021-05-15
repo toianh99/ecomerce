@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Role as Roles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasRoles;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,15 +48,21 @@ class User extends Authenticatable
      * @param String
      * @return bool
      */
-    public function hasPermission($permission): bool
+//    public function hasPermission($permission): bool
+//    {
+//        foreach ($this->roles as $role) {
+//            if (in_array($permission, $role->permissions->pluck('name')->toArray())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+    public function roles()
     {
-        foreach ($this->roles as $role) {
-            if (in_array($permission, $role->permissions->pluck('name')->toArray())) {
-                return true;
-            }
-        }
-        return false;
+        return $this->belongsToMany(Roles::class);
     }
+
 
     /**
      * @return bool
@@ -69,4 +77,5 @@ class User extends Authenticatable
 
         return false;
     }
+
 }

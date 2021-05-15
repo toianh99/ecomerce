@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-
+use Symfony\Component\HttpFoundation\Response;
+use Gate;
 class BrandController extends Controller
 {
     /**
@@ -20,18 +23,22 @@ class BrandController extends Controller
 
     public function index(Request  $request)
     {
-        $searchParams= $request->all();
-        //kiểm tra biết limit
-        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
-        //kiểm tra keyword search
-        $keyword=Arr::get($searchParams,'keyword','');
-        //gọi query product
-        $query=Brand::query();
+//        $searchParams= $request->all();
+//        //kiểm tra biết limit
+//        $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
+//        //kiểm tra keyword search
+//        $keyword=Arr::get($searchParams,'keyword','');
+//        //gọi query product
+//        $query=Brand::query();
+//
+//        if (!empty($keyword)) {
+//            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
+//        }
+//        return BrandResource::collection($query->paginate($limmit));
+        abort_if(Gate::denies('brand_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if (!empty($keyword)) {
-            $query->where('name_product', 'LIKE', '%' . $keyword . '%');
-        }
-        return BrandResource::collection($query->paginate($limmit));
+        $brands= Brand::all();
+        return view('admin.brand.index',compact('brands'));
     }
 
     /**
@@ -41,7 +48,8 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('brand_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.brand.create');
     }
 
     /**
@@ -50,26 +58,10 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request  $request)
+    public function store(StoreBrandRequest  $request)
     {
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name_brand' => ['required'],
-                'description'=>['required']
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        } else {
-            $params=$request->all();
-            $brand=Brand::create([
-                'name_brand'=>$params['name_brand'],
-                'description'=>$params['description'],
-            ]);
-            return response()->json(new JsonResponse($brand));
-        }
+        $brand= Brand::create($request->all());
+        return redirect()->route('brand.index');
 
     }
 
@@ -79,9 +71,10 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Brand $brand)
     {
-        return response()->json(new JsonResponse(Brand::where('id',$id)->first()));
+        abort_if(Gate::denies('brand_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.brand.show',compact('brand'));
     }
 
     /**
@@ -92,7 +85,9 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        //
+        abort_if(Gate::denies('brand_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.brand.edit',compact('brand'));
+
     }
 
     /**
@@ -102,24 +97,10 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(UpdateBrandRequest  $request, Brand $brand)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name_brand' => ['required'],
-                'description'=>['required']
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        } else {
-            $params=$request->all();
-            $brand->name_brand=$params['name_brand'];
-            $brand->description=$params['description'];
-            $brand->save();
-            return response()->json(new JsonResponse($brand));
-        }
+        $brand->update($request->all());
+        return redirect()->route('brand.index');
     }
 
     /**
