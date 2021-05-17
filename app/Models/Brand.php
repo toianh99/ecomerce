@@ -11,4 +11,7 @@ class Brand extends Model
     public function getId(){
         return $this->getAttribute('id');
     }
+    public function products(){
+        return $this->hasMany(Product::class,'brand_id','id');
+    }
 }

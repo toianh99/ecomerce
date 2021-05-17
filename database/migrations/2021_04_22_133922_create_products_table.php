@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->String('image2')->nullable();
             $table->decimal('sale_price');
             $table->boolean('status');
-            $table->String('overview');
+            $table->String('overview')->nullable();
             $table->integer('category_id');
             $table->integer('brand_id');
             $table->timestamp('deleted_at')->nullable();

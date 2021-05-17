@@ -9,6 +9,19 @@ return [
         'title'=>'Product Management',
         'title_singular'=>'Product Management'
     ],
+    'OrderManager'          =>[
+        'title'=>'Order Manager',
+        'title_singular'=>'Order Manager'
+    ],
+    'order'=>[
+        'title'=>'Order',
+        'title_singular'=>'Order',
+        'fields'=>[
+            'id'=>'ID',
+            ''
+        ]
+    ]
+    ,
     'product_color'      =>[
         'title'=>'Product Color',
         'title_singular'=>'Product Color',
@@ -56,9 +69,10 @@ return [
         'title_singular'=>'Product Variant',
         'fields'         => [
             'id'=>'ID',
-            'name-product'=>'Name Product',
+            'name_product'=>'Product',
             'size'=>'Size',
             'color'=>'Color',
+            'price'=>'Price',
             'quantity'=>'Quantity',
             'title_helper'=>''
         ]
@@ -359,7 +373,9 @@ return [
             'status'=>'Status',
             'overview'=>'overview',
             'default_image_helper'=>'',
-            'default_image'=>'Image'
+            'default_image'=>'Image',
+            'sale_price'=>'Sale',
+            'title_helper'=>''
         ]
     ],
     'permission'=>[

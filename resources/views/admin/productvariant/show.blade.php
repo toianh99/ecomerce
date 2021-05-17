@@ -3,7 +3,7 @@
 
     <div class="card">
         <div class="card-header">
-            {{ trans('global.show') }} {{ trans('cruds.product_color.title') }}
+            {{ trans('global.show') }} {{ trans('cruds.product_variant.title') }}
         </div>
 
         <div class="card-body">
@@ -12,51 +12,44 @@
                     <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.product.fields.id') }}
+                            {{ trans('cruds.product_variant.fields.id') }}
                         </th>
                         <td>
-                            {{ $product->id }}
+                            {{ $productVariant->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.product.fields.default_image') }}
+                            {{ trans('cruds.product_variant.fields.name_product') }}
                         </th>
+                        _
                         <td>
-                            <div class="d-flex">
-                                <img style="max-height: 100px"  src="{{isset($product->default_image) ? $product->default_image : '#'}}">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.product.fields.name_product') }}
-                        </th>
-
-                        <td>
-                            {{ $product->name_product }}
+                            {{ $productVariant->product->name_product }}
                         </td>
 
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.product.fields.description') }}
+                            {{ trans('cruds.product_variant.fields.size') }}
                         </th>
-                        <td >
-                            <div class="row">
-                                <div class="content" id="description" >
-
-                                </div>
-                            </div>
-
+                        <td>
+                            {{ $productVariant->size->code_size }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.product.fields.price') }}
+                            {{ trans('cruds.product_variant.fields.color') }}
                         </th>
                         <td>
-                            {{ $product->price }}
+                            {{ $productVariant->color->code_color }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.product_variant.fields.quantity') }}
+                        </th>
+                        <td>
+                            {{ $productVariant->quantity }}
                         </td>
                     </tr>
                     </tbody>
@@ -76,12 +69,4 @@
             </div>
         </div>
     </div>
-    <script>
-        function test(){
-            var product=@json($product['description']);
-            var x = document.getElementById('description');
-            x.insertAdjacentHTML("beforebegin",product);
-        }
-        test();
-    </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Gate;
 
 class UpdateProductColorRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class UpdateProductColorRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('product_size_edit'), Response::HTTP_FORBIDDEN,'403');
+        abort_if(Gate::denies('product_color_edit'), Response::HTTP_FORBIDDEN,'403');
         return true;
     }
 

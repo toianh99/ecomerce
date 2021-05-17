@@ -132,7 +132,30 @@
                                                     </p>
                                                 </a>
                                             </li>
-                                        @endcan
+                                    @endcan
+                                </ul>
+                            </li>
+                    @endcan
+                    @can('order_manager')
+                            <li class="nav-item has-treeview {{ request()->is('admin/permissions*') ? 'menu-open' : '' }} {{ request()->is('admin/roles*') ? 'menu-open' : '' }} {{ request()->is('admin/users*') ? 'menu-open' : '' }}">
+                                <a class="nav-link nav-dropdown-toggle" href="#">
+                                    <i class="fa fa-fw fa-bars"></i>
+                                    <p>
+                                        <span>{{ trans('cruds.OrderManager.title') }}</span>
+                                        <i class="right fa fa-fw fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    @can('order_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('order.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>{{ trans('cruds.product_variant.title') }}</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 </ul>
                             </li>
                     @endcan

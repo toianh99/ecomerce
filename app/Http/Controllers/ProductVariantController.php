@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductVariantRequest;
 use App\Http\Requests\UpdateProductVariantRequest;
+use App\Models\Product;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +34,12 @@ class ProductVariantController extends Controller
     public function create()
     {
         abort_if(Gate::denies('product_variant_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('admin.productvariant.create');
+        $products=Product::all()->where('id','!=',2);
+        $colors=ProductColor::all();
+        $sizes=ProductSize::all();
+//        print_r($sizes);
+//        die();
+        return view('admin.productvariant.create',compact('products','colors','sizes'));
     }
 
     /**
@@ -55,7 +63,7 @@ class ProductVariantController extends Controller
     public function show(ProductVariant $productVariant)
     {
         abort_if(Gate::denies('product_variant_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('admin.productvariant.show',compact($productVariant));
+        return view('admin.productvariant.show',compact('productVariant'));
     }
 
     /**
@@ -67,7 +75,10 @@ class ProductVariantController extends Controller
     public function edit(ProductVariant $productVariant)
     {
         abort_if(Gate::denies('product_variant_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('admin.productvariant.edit',compact($productVariant));
+        $products=Product::all()->where('id','!=',2);
+        $colors=ProductColor::all();
+        $sizes=ProductSize::all();
+        return view('admin.productvariant.edit',compact('productVariant','products','sizes','colors'));
     }
 
     /**

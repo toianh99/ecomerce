@@ -102,7 +102,7 @@
                     <label for="status">{{ trans('cruds.product.fields.category') }}</label>
                     <select name="category_id" id="category" class="form-control ">
                         @foreach($categories as $id => $category)
-                            <option value="{{ $id }}" {{ (isset($product) && $product->category ? $product->category->id : old('$category_id')) == $id ? 'selected' : '' }}>{{$category['name_category']}}</option>
+                            <option value="{{ $category['id'] }}" {{ (isset($product) && $product->category ? $product->category->id : old('$category_id')) == $category['id'] ? 'selected' : '' }}>{{$category['name_category']}}</option>
                         @endforeach
                     </select>
                     @if($errors->has('category'))
@@ -114,8 +114,9 @@
                 <div class="form-group {{ $errors->has('brand') ? 'has-error' : '' }}">
                     <label for="brand_id">{{ trans('cruds.product.fields.brand') }}</label>
                     <select name="brand_id" id="brand" class="form-control ">
-                        @foreach($brands as $id => $brand)
-                            <option value="{{ $id }}" {{ (isset($product) && $product->brand ? $product->brand->id : old('$brand_id')) == $id ? 'selected' : '' }}>{{$brand['name_brand']}}</option>
+                        @foreach($brands as $brand)
+
+                            <option value="{{ $brand['id']}}" {{ (isset($product) && $product->brand ? $product->brand->id : old('$brand_id')) == $brand['id'] ? 'selected' : '' }}>{{$brand['name_brand']}}</option>
                         @endforeach
                     </select>
                     @if($errors->has('brand'))

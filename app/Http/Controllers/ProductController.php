@@ -41,7 +41,10 @@ class ProductController extends Controller
 //        return  ProductResource::collection($query->paginate($limmit));
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Product::all();
+        $clients=ProductResource::collection(Product::all()->where('status','!=',2));
+//        $clients = Product::all();
+//        print_r($clients);
+//        die();
         return view('admin.product.index', compact('clients'));
     }
 
@@ -94,7 +97,8 @@ class ProductController extends Controller
                 'status'=>$params['status_id'],
                 'overview'=>$params['overview'],
             ]);
-            return new ProductResource($product);
+            return redirect()->route('product.index');
+
         }
 
     }
@@ -105,9 +109,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        return response()->json(new JsonResource(Product::where('id',$id)->first()));
+        abort_if(Gate::denies('product_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+//        print_r($product);
+//        die();
+        return view('admin.product.show',compact('product'));
     }
 
     /**
@@ -118,7 +125,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+
+        $categories=Category::all();
+        $brands=Brand::all();
+       abort_if(Gate::denies('product_edit'),Response::HTTP_FORBIDDEN, '403 Forbidden');
+       return view('admin.product.edit', compact('product','categories','brands'));
     }
 
     /**
@@ -149,15 +160,15 @@ class ProductController extends Controller
                 $product->brand_id=$params['brand_id'];
                 $product->category_id=$params['category_id'];
                 $product->default_image=$params['default_image'];
-                $product->image1=$params['image1'];
-                $product->image2=$params['image2'];
-                $product->image3=$params['image3'];
-                $product->image4=$params['image4'];
-                $product->overview=$params['overview'];
+//                $product->image1=$params['image1'];
+//                $product->image2=$params['image2'];
+//                $product->image3=$params['image3'];
+//                $product->image4=$params['image4'];
+//                $product->overview=$params['overview'];
                 $product->description=$params['description'];
-                $product->status=1;
+            $product->status=$params['status_id'];
                 $product->save();
-            return response()->json(new JsonResponse($product));
+            return redirect()->route('product.index');
         }
     }
 
@@ -170,11 +181,12 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
-            $product->status=0;
-            $time =date('Y-m-d H:i:s');
-            $product->deleted_at=$time;
+            // status : 1 đang kinh doanh, 2 ngừng kinh doanh 3 tạm hết hàng
+            $product->status=2;
+//            $time =date('Y-m-d H:i:s');
+//            $product->deleted_at=$time;
             $product->save();
-            return response()->json(['succuess'=>'xóa thành công'],200);
+            return redirect()->route('product.index');
         } catch (\Exception $ex) {
             response()->json(['error' => $ex->getMessage()], 403);
         }

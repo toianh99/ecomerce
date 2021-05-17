@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('content')
-    @can('client_create')
+    @can('product_variant_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route("admin.product-variant.create") }}">
+                <a class="btn btn-success" href="{{ route("product-variant.create") }}">
                     {{ trans('global.add') }} {{ trans('cruds.product_variant.title_singular') }}
                 </a>
             </div>
@@ -29,13 +29,13 @@
                             {{ trans('cruds.product_variant.fields.name_product') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product_variant.fields.price') }}
+                            {{ trans('cruds.product_variant.fields.color') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product_variant.fields.sale') }}
+                            {{ trans('cruds.product_variant.fields.size') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product_variant.fields.brand') }}
+                            {{ trans('cruds.product_variant.fields.quantity') }}
                         </th>
                         <th>
                             &nbsp;
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                     @foreach($productVariants as $key => $productVariant)
-                        <tr data-entry-id="{{ $client->id }}">
+                        <tr data-entry-id="{{ $productVariant->id }}">
                             <td>
 
                             </td>
@@ -55,30 +55,30 @@
                                 {{ $productVariant->product->name_product ?? '' }}
                             </td>
                             <td>
-                                {{ $productVariant->productSize->name_product_size ?? '' }}
+                                {{ $productVariant->size->name_product_size ?? '' }}
                             </td>
                             <td>
-                                {{ $productVariant->productColor->name_product_color ?? '' }}
+                                {{ $productVariant->color->name_product_color ?? '' }}
                             </td>
 
                             <td>
                                 {{ $productVariant->quantity ?? '' }}
                             </td>
                             <td>
-                                @can('product_show')
-                                    <a class="btn btn-xs btn-primary" href="#">
+                                @can('product_variant_show')
+                                    <a class="btn btn-xs btn-primary" href="{{route('product-variant.show',$productVariant->id)}}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('product_edit')
-                                    <a class="btn btn-xs btn-info" href="#">
+                                @can('product_variant_edit')
+                                    <a class="btn btn-xs btn-info" href="{{route('product-variant.edit',$productVariant->id)}}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('client_delete')
-                                    <form action="{{ route('admin.clients.destroy', $client->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('product_variant_delete')
+                                    <form action="{{ route('product-variant.destroy', $productVariant->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
