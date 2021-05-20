@@ -151,7 +151,27 @@
                                             <a href="{{route('order.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
                                                 <i class="fa-fw fas fa-coins"></i>
                                                 <p>
-                                                    <span>{{ trans('cruds.product_variant.title') }}</span>
+                                                    <span>{{ trans('cruds.order.title') }}</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('payment_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('payment.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>{{ trans('cruds.payment.title') }}</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('shipment_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('shipment.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>{{ trans('cruds.shipment.title') }}</span>
                                                 </p>
                                             </a>
                                         </li>
@@ -159,6 +179,59 @@
                                 </ul>
                             </li>
                     @endcan
+                    @can('inventory_manager')
+                            <li class="nav-item has-treeview {{ request()->is('admin/permissions*') ? 'menu-open' : '' }} {{ request()->is('admin/roles*') ? 'menu-open' : '' }} {{ request()->is('admin/users*') ? 'menu-open' : '' }}">
+                                <a class="nav-link nav-dropdown-toggle" href="#">
+                                    <i class="fa fa-fw fa-bars"></i>
+                                    <p>
+                                        <span>{{ trans('cruds.inventory.title') }}</span>
+                                        <i class="right fa fa-fw fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    @can('import_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('import.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>{{ trans('cruds.inventory.import') }}</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('export_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('export.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>{{ trans('cruds.inventory.export') }}</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('inventory_access')
+                                        <li class="nav-item">
+                                            <a href="{{route('shipment.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                <i class="fa-fw fas fa-coins"></i>
+                                                <p>
+                                                    <span>Inventory</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                        @can('supplier_access')
+                                            <li class="nav-item">
+                                                <a href="{{route('supplier.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                                    <i class="fa-fw fas fa-coins"></i>
+                                                    <p>
+                                                        <span>Supplier</span>
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                </ul>
+                            </li>
+                        @endcan
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                         <p>

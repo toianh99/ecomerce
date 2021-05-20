@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
+use  Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShipmentController extends Controller
 {
@@ -14,7 +17,9 @@ class ShipmentController extends Controller
      */
     public function index()
     {
-        //
+        abort_if(Gate::denies('shipment_access'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $shipments =Shipment::all();
+        return view('admin.shipment.index',compact('shipments'));
     }
 
     /**
@@ -24,7 +29,8 @@ class ShipmentController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('shipment_create'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.shipment.create');
     }
 
     /**
@@ -35,7 +41,9 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort_if(Gate::denies('shipment_create'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        Shipment::create($request->all());
+        return redirect()->route('shipment.index');
     }
 
     /**
@@ -46,7 +54,8 @@ class ShipmentController extends Controller
      */
     public function show(Shipment $shipment)
     {
-        //
+        abort_if(Gate::denies('shipment_show'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.shipment.show',compact('shipment'));
     }
 
     /**
@@ -57,7 +66,8 @@ class ShipmentController extends Controller
      */
     public function edit(Shipment $shipment)
     {
-        //
+        abort_if(Gate::denies('shipment_edit'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('admin.shipment.edit',compact('shipment'));
     }
 
     /**
@@ -69,7 +79,9 @@ class ShipmentController extends Controller
      */
     public function update(Request $request, Shipment $shipment)
     {
-        //
+        abort_if(Gate::denies('shipment_edit'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $shipment->update($request->all());
+        return  redirect()->route('shipment.index');
     }
 
     /**
@@ -80,6 +92,11 @@ class ShipmentController extends Controller
      */
     public function destroy(Shipment $shipment)
     {
-        //
+        try {
+            $shipment->delete();
+            return redirect()->route('payment.index');
+        } catch (\Exception $ex) {
+            response()->json(['error' => $ex->getMessage()], 403);
+        }
     }
 }

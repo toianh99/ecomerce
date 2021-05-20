@@ -43,17 +43,22 @@ Route::Resource('district',DistrictController::class);
 Route::Resource('address',AddressController::class);
 Route::Resource('ward',WardController::class);
 Route::apiResource('order',OrderController::class);
-Route::apiResource('payment',PaymentController::class);
+Route::Resource('payment',PaymentController::class)->middleware('auth');
+Route::Resource('shipment', \App\Http\Controllers\ShipmentController::class)->middleware('auth');
 Route::apiResource('cart',CartController::class);
 Route::apiResource('user',\App\Http\Controllers\UserController::class);
 Route::Resource('permission',\App\Http\Controllers\PermissionController::class)->middleware('auth');
 Route::Resource('product-color',\App\Http\Controllers\ProductColorController::class)->middleware('auth');
 Route::Resource('product-size',\App\Http\Controllers\ProductSizeController::class)->middleware('auth');
 Route::Resource('product-variant',\App\Http\Controllers\ProductVariantController::class)->middleware('auth');
-Route::get('/products',[ProductController::class,'indexs'])->middleware('auth');
+//Route::get('/products',[ProductController::class,'indexs'])->middleware('auth');
 Route::get('/test',[\App\Http\Controllers\TestController::class,'index'])->middleware('auth');
 Route::post('/test',[\App\Http\Controllers\TestController::class,'create'])->middleware('auth')->name('test.create');
-
+Route::Resource('import',\App\Http\Controllers\ImportController::class)->middleware('auth');
+Route::Resource('export',\App\Http\Controllers\ExportController::class)->middleware('auth');
+Route::Resource('supplier',\App\Http\Controllers\SupplierController::class)->middleware('auth');
+Route::Resource('importDetail',\App\Http\Controllers\ImportDetailController::class);
+Route::post('/importDetail/updateID',[\App\Http\Controllers\ImportDetailController::class,'updateID'])->middleware('auth');
 
 Auth::routes();
 

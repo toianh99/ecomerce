@@ -18,7 +18,45 @@ return [
         'title_singular'=>'Order',
         'fields'=>[
             'id'=>'ID',
-            ''
+            'code'=>'Order Code',
+            'order_date'=>'Order Date',
+            'status'=>'Status',
+            'payment'=>'Payment',
+            'address'=>'Address',
+            'user'=>'User',
+            'node'=>'Node',
+            'subTotal'=>'Sub ToTal',
+            'phoneNumber'=>'Phone Number',
+            'ship'=>'Ship'
+        ]
+    ]
+    ,
+    'shipment'=>[
+        'title'=>'Shipment',
+        'title_singular'=>'Shipment',
+        'fields'         => [
+            'id'=>'ID',
+            'name'=>'Type Ship',
+            'cost'=>'Cost',
+            'description'=>'Description',
+            'title_helper'=>''
+
+        ]
+    ],
+    'inventory'=>[
+        'title'=>'Inventory',
+        'title_singular'=>'Inventory',
+        'import'=>'Import',
+        'export'=>'Export'
+    ],
+    'payment'=>[
+        'title'=>'Payment',
+        'title_singular'=>'Payment',
+        'fields'         => [
+            'id'=>'ID',
+            'name'=>'Type Payment',
+            'description'=>'Description',
+            'title_helper'=>''
         ]
     ]
     ,

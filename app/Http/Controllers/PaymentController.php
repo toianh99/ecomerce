@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
@@ -14,7 +16,9 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        abort_if(Gate::denies('payment_access'),Response::HTTP_FORBIDDEN,'403');
+        $payments= Payment::all();
+        return view('admin.payment.index', compact('payments'));
     }
 
     /**
@@ -24,7 +28,8 @@ class PaymentController extends Controller
      */
     public function create()
     {
-        //
+        abort_if(Gate::denies('payment_create'),Response::HTTP_FORBIDDEN, '403');
+        return view('admin.payment.create');
     }
 
     /**
@@ -35,7 +40,10 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403');
+        $payment= $request->all();
+        Payment::create($request->all());
+        return redirect()->route('payment.index');
     }
 
     /**
@@ -46,7 +54,8 @@ class PaymentController extends Controller
      */
     public function show(Payment $payment)
     {
-        //
+        abort_if(Gate::denies('payment_show'),Response::HTTP_FORBIDDEN,'403');
+        return view('admin.payment.show',compact('payment'));
     }
 
     /**
@@ -57,7 +66,8 @@ class PaymentController extends Controller
      */
     public function edit(Payment $payment)
     {
-        //
+        abort_if(Gate::denies('payment_edit'), Response::HTTP_FORBIDDEN,'403');
+        return view('admin.payment.edit', compact('payment'));
     }
 
     /**
@@ -69,7 +79,9 @@ class PaymentController extends Controller
      */
     public function update(Request $request, Payment $payment)
     {
-        //
+        abort_if(Gate::denies('payment_edit'),Response::HTTP_FORBIDDEN,'403');
+        $payment->update($request->all());
+        return redirect()->route('payment.index');
     }
 
     /**
@@ -80,6 +92,11 @@ class PaymentController extends Controller
      */
     public function destroy(Payment $payment)
     {
-        //
+        try {
+            $payment->delete();
+            return redirect()->route('payment.index');
+        } catch (\Exception $ex) {
+            response()->json(['error' => $ex->getMessage()], 403);
+        }
     }
 }

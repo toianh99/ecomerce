@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
-
+use Gate;
 class OrderController extends Controller
 {
     /**
@@ -15,7 +16,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return OrderResource::collection(Order::all());
+        abort_if(Gate::denies('order_access'), \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $orders = Order::all();
+        return view('admin.order.index',compact('orders'));
     }
 
     /**

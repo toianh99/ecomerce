@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('content')
-    @can('order_create')
+    @can('supplier_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route("product.create") }}">
-                    {{ trans('global.add') }} {{ trans('cruds.order.title_singular') }}
+                <a class="btn btn-success" href="{{ route('supplier.create') }}">
+                    Thêm Nhà Cung Cấp
                 </a>
             </div>
         </div>
@@ -26,19 +26,13 @@
                             ID
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.code') }}
+                           Tên Nhà Cung Cấp
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.order_date') }}
+                            Số Điện Thoại
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.status') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.order.fields.payment') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.order.fields.ship') }}
+                            Địa Chỉ
                         </th>
                         <th>
                             &nbsp;
@@ -46,44 +40,39 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($orders as $order)
-                        <tr data-entry-id="{{ $order->id }}">
+                    @foreach($suppliers as $key => $supplier)
+                        <tr data-entry-id="{{ $supplier->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $order->id ?? '' }}
+                                {{ $supplier->id ?? '' }}
                             </td>
                             <td>
-                                {{ $order->order_date ?? '' }}
+                                {{ $supplier->name?? '' }}
                             </td>
                             <td>
-                                {{ $order->status ?? '' }}
+                                {{ $supplier->phone?? '' }}
                             </td>
                             <td>
+                                {{ $supplier->address ?? '' }}
+                            </td>
 
-                            </td>
                             <td>
-                                {{ $client->payment ?? '' }}
-                            </td>
-                            <td>
-                                {{ $client->ship ?? '' }}
-                            </td>
-                            <td>
-                                @can('product_show')
-                                    <a class="btn btn-xs btn-primary" href="{{route('product.show',$client->id)}}">
+                                @can('supplier_show')
+                                    <a class="btn btn-xs btn-primary" href="{{route('supplier.show',$supplier->id)}}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('product_edit')
-                                    <a class="btn btn-xs btn-info" href="{{route('product.edit',$client->id)}}">
+                                @can('supplier_edit')
+                                    <a class="btn btn-xs btn-info" href="{{route('supplier.edit',$supplier->id)}}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('product_delete')
-                                    <form action="{{route('product.destroy',$client->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('supplier_delete')
+                                    <form action="{{ route('supplier.destroy', $supplier->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -104,11 +93,11 @@
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('product_delete')
+            @can('permisison_delete')
             let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('product.destroy',1) }}",
+                url: "{{ route('permission.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

@@ -43,12 +43,23 @@ class PermissionController extends Controller
         return view('admin.permission.edit', compact('permission'));
     }
 
-    public function update(UpdatePermissionRequest $request, per $permission)
+    public function update(Request $request, per $permission)
     {
         $permission->update($request->all());
 
-        return redirect()->route('admin.permissions.index');
+        return redirect()->route('permission.index');
     }
-
+    public function destroy(\App\Models\Permission $permission)
+    {
+        try {
+            // status : 1 đang kinh doanh, 2 ngừng kinh doanh 3 tạm hết hàng
+            $permission->delete();
+//            $time =date('Y-m-d H:i:s');
+//            $product->deleted_at=$time;
+            return redirect()->route('permission.index');
+        } catch (\Exception $ex) {
+            response()->json(['error' => $ex->getMessage()], 403);
+        }
+    }
 
 }
