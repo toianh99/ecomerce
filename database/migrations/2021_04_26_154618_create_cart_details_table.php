@@ -17,7 +17,9 @@ class CreateCartDetailsTable extends Migration
             $table->id();
             $table->float('price');
             $table->float('cart_id');
-            $table->float('discount')->default(0);
+            $table->integer('size_id');
+            $table->integer('color_id');
+            $table->float('discount');
             $table->integer('quantity');
             $table->integer('active');
             $table->timestamps();

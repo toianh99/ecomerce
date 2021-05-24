@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ExportDetail;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class ExportDetailController extends Controller
 {
@@ -14,7 +15,8 @@ class ExportDetailController extends Controller
      */
     public function index()
     {
-        //
+        $this->authen('export_access');
+        return response()->json(ExportDetail::all()->where('export_id','=',0));
     }
 
     /**
@@ -35,7 +37,10 @@ class ExportDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = request()->all();
+        $input['export_id']=0;
+        ExportDetail::create($input);
+        return response()->json(['success'=>'Got Simple Ajax Request.']);
     }
 
     /**
@@ -46,7 +51,19 @@ class ExportDetailController extends Controller
      */
     public function show(ExportDetail $exportDetail)
     {
-        //
+        return response()->json($exportDetail);
+    }
+
+    public function updateID(Request $request){
+        $res= $request->all();
+        $id=$res['id'];
+        $importDetails=ExportDetail::all()->where('import_id','=',0);
+        foreach ($importDetails as $r){
+            $r->export_id=$id;
+            $r->save();
+        }
+        return response()->json(["success"=>"Thành công"]);
+
     }
 
     /**
@@ -69,7 +86,8 @@ class ExportDetailController extends Controller
      */
     public function update(Request $request, ExportDetail $exportDetail)
     {
-        //
+        $exportDetail->update($request->all());
+        return response()->json(['success'=>'Got Simple Ajax Request.']);
     }
 
     /**
@@ -80,6 +98,11 @@ class ExportDetailController extends Controller
      */
     public function destroy(ExportDetail $exportDetail)
     {
-        //
+        try {
+            $exportDetail->delete();
+            return response()->json(['success'=>'Got Simple Ajax Request.']);
+        }catch (Exception $err){
+            return response()->json(['error'=>'eror']);
+        }
     }
 }

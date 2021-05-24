@@ -22,7 +22,6 @@ class ImportController extends Controller
     {
         $this->authen('import_access');
         $imports= Import::all();
-
         return view('admin.import.index',compact('imports',));
     }
 
@@ -78,7 +77,9 @@ class ImportController extends Controller
      */
     public function show(Import $import)
     {
-        //
+        $this->authen('import_show');
+        $importDetails=ImportDetail::all()->where('import_id','=',$import->id);
+        return view('admin.import.show',compact('importDetails','import'));
     }
 
     /**
@@ -112,6 +113,11 @@ class ImportController extends Controller
      */
     public function destroy(Import $import)
     {
-        //
+        try {
+            $import->delete();
+            return redirect()->route('import.index');
+        }catch (Exception $e){
+            return response()->json(['exception'=>'LỖi']);
+        }
     }
 }

@@ -37,6 +37,7 @@
                         <th>
                             &nbsp;Trạng Thái
                         </th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,9 @@
                             </td>
                             <td>
                                 {{ $import->user->name ?? '' }}
+                            </td>
+                            <td>
+                                {{$import->import_date}}
                             </td>
                             <td>
 {{--                                {{ $brand->user->name ?? '' }}--}}
@@ -72,15 +76,8 @@
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
-
-                                @can('import_edit')
-                                    <a class="btn btn-xs btn-info" href="{{route('import.edit',$import->id)}}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
                                 @can('import_delete')
-                                    <form action="{{ route('import.destroy', $impport->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('import.destroy', $import->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

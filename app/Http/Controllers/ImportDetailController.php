@@ -71,9 +71,11 @@ class ImportDetailController extends Controller
     }
 
     public function updateID(Request $request){
-        $res= $request->all()['ids'];
-        foreach ($res as $r){
-            $r->
+        $res= $request->all();
+        $id=$res['id'];
+        $importDetails=ImportDetail::all()->where('import_id','=',0);
+        foreach ($importDetails as $r){
+            $r->import_id=$id;
             $r->save();
         }
        return response()->json(["success"=>"Thành công"]);

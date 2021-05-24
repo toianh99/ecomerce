@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Gate;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (Gate::denies('home_access')){
+            return view('home');
+        }
+        else{
+            return redirect()->route('login');
+        }
+
     }
 }

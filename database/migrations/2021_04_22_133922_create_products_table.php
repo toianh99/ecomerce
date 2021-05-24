@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->String('name_product');
-            $table->string('description');
+            $table->longText('description');
             $table->decimal('price', 8, 2);
             $table->String('default_image')->nullable();
             $table->String('image1')->nullable();
@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->String('image2')->nullable();
             $table->decimal('sale_price');
             $table->boolean('status');
-            $table->String('overview')->nullable();
+            $table->longText('overview')->nullable();
             $table->integer('category_id');
             $table->integer('brand_id');
             $table->timestamp('deleted_at')->nullable();

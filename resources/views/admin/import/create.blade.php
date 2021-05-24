@@ -198,7 +198,7 @@
                     }
 
                 });
-            }else if ($('#save').val()=='edit') {
+            }else if ($('#save').val()=='edit'&& e) {
                 $.ajax({
                     method: 'PUT',
                     url: "{{route('importDetail.index')}}/" + e,
@@ -305,14 +305,11 @@
                     supplier_id:supplier_id
                 },
                 success:function (data){
-                    ids.forEach(e=>{
-                       e.import_id=data.id;
-                    });
                     $.ajax({
                         type:'POST',
                         url:"{{route('importDetail.index')}}/updateID",
                         data: {
-                            ids:ids
+                           id:data.id
                         },
                         success:function (data){
                             window.location.replace("{{route('import.index')}}");
