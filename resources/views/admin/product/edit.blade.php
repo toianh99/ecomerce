@@ -126,7 +126,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('vendor/laravel-filemanager/js/stand-alone-button.js')}}"></script>
+    <script src="{{secure_asset('vendor/laravel-filemanager/js/stand-alone-button.js')}}"></script>
     <script>
         $('#lfm').filemanager('image');
         var desc = @json($product['description']);

@@ -6920,7 +6920,7 @@ window.tinymce.Resource.add("tinymce.plugins.emoticons", {
     category: "symbols"
   },
   loop: {
-    keywords: [ "tape", "cassette" ],
+    keywords: [ "tape", "csecure_assette" ],
     "char": '<img data-emoticon="true" style="width:1em;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em" draggable="false" alt="\u27bf" src="27bf.png"/>',
     fitzpatrick_scale: false,
     category: "symbols"
