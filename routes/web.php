@@ -33,10 +33,10 @@ Route::get('/admin', function () {
 //Route::get('/web/product',function (){
 //   return view('web/products');
 //})->name('web-product');
-
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
+//
+//Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+//    \UniSharp\LaravelFilemanager\Lfm::routes();
+//});
 Route::Resource('product',ProductController::class)->middleware('auth');
 Route::Resource('roles',RoleController::class)->middleware('auth');
 //Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy')->middleware('auth');
