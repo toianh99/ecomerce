@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body">
-{{--            <img src="{{secure_asset('storage/photos/1/test.jpg')}}">--}}
+{{--            <img src="{{asset('storage/photos/1/test.jpg')}}">--}}
             <form action="#" method="post" enctype="multipart/form-data">
                 @csrf
                 <textarea id="tinymce" name="tinymce"></textarea>

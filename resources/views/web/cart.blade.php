@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedStore | Ecommerce Website Design</title>
-    <link rel="stylesheet" href="{{secure_asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
     <script src="{{ mix('js/app.js') }}"></script>
@@ -17,7 +17,7 @@
     <div class="container">
         <div class="navbar">
             <div class="logo">
-                <a href="{{route('web-home')}}"><img src="{{secure_asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
+                <a href="{{route('web-home')}}"><img src="{{asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
             </div>
             <nav>
                 <ul id="MenuItems">
@@ -28,7 +28,10 @@
                     {{--                    <li><a href="account.html">Account</a></li>--}}
                 </ul>
             </nav>
-            <a href="cart.html"><img src="{{secure_asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <a href="{{route('cart.index')}}"><img src="{{asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <div>
+                <span id="count_cart"></span>
+            </div>
             <img src="images/menu.png" class="menu-icon"
                  onclick="menutoggle()">
         </div>
@@ -39,74 +42,30 @@
 <!-- -----------------cart item details------------------- -->
 <div class="small-container cart-page">
     <table>
+        <thead>
         <tr>
             <th>Product</th>
             <th>Quantity</th>
             <th>Subtotal</th>
         </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="images/buy-1.jpg">
-                    <div>
-                        <p>Red Printed Tshirt</p>
-                        <small>Price: $50.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1"></td>
-            <td>$50.00</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="images/buy-2.jpg">
-                    <div>
-                        <p>Red Printed Tshirt</p>
-                        <small>Price: $75.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1"></td>
-            <td>$75.00</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="images/buy-3.jpg">
-                    <div>
-                        <p>Red Printed Tshirt</p>
-                        <small>Price: $50.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1"></td>
-            <td>$50.00</td>
-        </tr>
+        </thead>
+        <tbody id="cart_body">
+        </tbody>
     </table>
 
     <div class="total-price">
         <table>
-            <tr>
-                <td>Subtotal</td>
-                <td>175.000$</td>
-            </tr>
-            <tr>
-                <td>Tax</td>
-                <td>25.00$</td>
-            </tr>
-            <tr>
-                <td>Total</td>
-                <td>200.000$</td>
+            <tr id="total">
+
+
             </tr>
         </table>
 
+    </div>
+    <div class="d-flex">
+        <div style="margin-left: auto">
+            <a href="{{route('check-out.index')}}" class="btn btn-danger" style="margin-left: auto">Thanh Toán</a>
+        </div>
     </div>
 
 
@@ -121,12 +80,12 @@
                 <h3>Download Our App</h3>
                 <p>Download App for Android and ios mobile phone</p>
                 <div class="app-logo">
-                    <img src="{{secure_asset('storage/photos/1/footer/google.png')}}">
-                    <img src="{{secure_asset('storage/photos/1/footer/apple.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/google.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/apple.png')}}">
                 </div>
             </div>
             <div class="footer-col-2">
-                <img src="{{secure_asset('storage/photos/1/footer/logo_footer.png')}}">
+                <img src="{{asset('storage/photos/1/footer/logo_footer.png')}}">
                 <p>Our Purpose Is To Sustainably Make the Pleasure and
                     Benefits of Sports Accessible to the Many</p>
             </div>
@@ -167,6 +126,37 @@
                 MenuItems.style.maxHeight = "0px";
             }
         }
+        function onLoadCart(){
+            var total=0;
+            $.ajax({
+                type:'GET',
+                url:"{{route('cartDetail.index')}}",
+                success:function (data) {
+                    console.log(data);
+                    var tb="";
+                    data.forEach(d=>{
+                        tb+="<tr>" +
+                            "<td>" +
+                            "<div class='cart-info'><img src='"+d.product.image_default+"'><div>" +
+                        "<p>"+d.product.product_name+"</p>" +
+                            "<small>Price: "+d.product.price+"</small><br>" +
+                            "<a href=''>Remove</a>" +
+                        "</div>" +
+                        "</div>" +
+                        "<td>" +
+                        "<input type='number' value='"+d.quantity+"'></td>" +
+                        "<td>"+d.product.price*d.quantity+"</td>" +
+                        "</tr>";
+                        console.log(d.product.product_name);
+                        total+=d.product.price*d.quantity;
+                    });
+                    // console.log(total);
+                    document.getElementById('cart_body').innerHTML=tb;
+                    document.getElementById('total').innerHTML=" <td >Total</td><td>"+total+"</td>";
+                }
+            });
+        }
+        onLoadCart();
 
     </script>
 

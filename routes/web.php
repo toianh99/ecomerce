@@ -72,6 +72,10 @@ Route::Resource('cartDetail',\App\Http\Controllers\CartDetailController::class);
 Route::get('web/login',[\App\Http\Controllers\LoginController::class,'index'])->name('web.login.index');
 Route::post('web/login',[\App\Http\Controllers\LoginController::class,'login'])->name('web.login');
 Route::post('web/register',[\App\Http\Controllers\RegisterController::class,'register'])->name('web.register');
+Route::Resource('cart',CartController::class)->middleware('auth');
+Route::get('/checkout',[\App\Http\Controllers\CheckOutController::class,'index'])->middleware('auth')->name('checkout');
+
+Route::apiResource('check-out',\App\Http\Controllers\Api\CheckOutController::class)->middleware('auth');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');

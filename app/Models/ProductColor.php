@@ -14,4 +14,10 @@ class ProductColor extends Model
     {
         return $this->getAttribute('id');
     }
+
+    public function cartDetail(){
+        return $this->hasMany(CartDetail::class,'color_id','id');
+    }
+
+
 }

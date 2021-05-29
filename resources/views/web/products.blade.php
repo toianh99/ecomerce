@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedStore | Ecommerce Website Design</title>
-    <link rel="stylesheet" href="{{secure_asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
     <script src="{{ mix('js/app.js') }}"></script>
@@ -17,7 +17,7 @@
     <div class="container">
         <div class="navbar">
             <div class="logo">
-                <a href="{{route('web-home')}}"><img src="{{secure_asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
+                <a href="{{route('web-home')}}"><img src="{{asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
             </div>
             <nav>
                 <ul id="MenuItems">
@@ -28,14 +28,16 @@
                     {{--                    <li><a href="account.html">Account</a></li>--}}
                 </ul>
             </nav>
-            <a href="cart.html"><img src="{{secure_asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <a href="cart.html"><img src="{{asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <div>
+                <span id="count_cart"></span>
+            </div>
             <img src="images/menu.png" class="menu-icon"
                  onclick="menutoggle()">
         </div>
 
     </div>
 </div>
-
 
 
 <div class="small-container">
@@ -85,12 +87,12 @@
                 <h3>Download Our App</h3>
                 <p>Download App for Android and ios mobile phone</p>
                 <div class="app-logo">
-                    <img src="{{secure_asset('storage/photos/1/footer/google.png')}}">
-                    <img src="{{secure_asset('storage/photos/1/footer/apple.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/google.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/apple.png')}}">
                 </div>
             </div>
             <div class="footer-col-2">
-                <img src="{{secure_asset('storage/photos/1/footer/logo_footer.png')}}">
+                <img src="{{asset('storage/photos/1/footer/logo_footer.png')}}">
                 <p>Our Purpose Is To Sustainably Make the Pleasure and
                     Benefits of Sports Accessible to the Many</p>
             </div>
@@ -168,6 +170,17 @@
             }
         });
     }
+    function onLoadCart(){
+        $.ajax({
+            type:'GET',
+            url:"{{route('cartDetail.index')}}",
+            success:function (data) {
+                console.log(data)
+                document.getElementById('count_cart').innerText=data.length;
+            }
+        });
+    }
+    onLoadCart();
 
 </script>
 </body>
