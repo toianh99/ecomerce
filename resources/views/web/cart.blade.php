@@ -21,17 +21,24 @@
             </div>
             <nav>
                 <ul id="MenuItems">
-                    <li><a href="{{route('web-home')}}">Home</a></li>
-                    <li><a href="{{route('api-product.index')}}">Products</a></li>
-                    {{--                    <li><a href="">About</a></li>--}}
-                    {{--                    <li><a href="">Contact</a></li>--}}
-                    {{--                    <li><a href="account.html">Account</a></li>--}}
+                    <li><a href="{{route('web-home')}}">Trang Chủ</a></li>
+                    <li><a href="{{route('api-product.index')}}">Sản Phẩm</a></li>
+
                 </ul>
             </nav>
             <a href="{{route('cart.index')}}"><img src="{{asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
             <div>
                 <span id="count_cart"></span>
             </div>
+            @if(Auth::check())
+                <i style="margin-left:20px;" class="fa fa-user"></i> <a  href="{{route('web.login.index')}}">{{Auth::user()->name}}</a>
+                <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+                <a href="" style="margin-left:20px;" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">Đăng xuất</a>
+            @else
+                <a style="margin-left:20px;"href="{{route('web.login.index')}}">Đăng nhập/Đăng kì</a>
+            @endif
             <img src="images/menu.png" class="menu-icon"
                  onclick="menutoggle()">
         </div>

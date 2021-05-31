@@ -26,19 +26,22 @@
                             ID
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.code') }}
+                            Full Name
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.order_date') }}
+                            PhoneNumber
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.status') }}
+                            Address
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.payment') }}
+                            Email
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.ship') }}
+                            City
+                        </th>
+                        <th>
+                            Status
                         </th>
                         <th>
                             &nbsp;
@@ -55,40 +58,45 @@
                                 {{ $order->id ?? '' }}
                             </td>
                             <td>
-                                {{ $order->order_date ?? '' }}
+                                {{ $order->fullName ?? '' }}
                             </td>
                             <td>
-                                {{ $order->status ?? '' }}
+                                {{ $order->phoneNumber ?? '' }}
                             </td>
                             <td>
-
+                                {{ $order->address ?? '' }}
                             </td>
                             <td>
-                                {{ $client->payment ?? '' }}
+                                {{ $order->email ?? '' }}
                             </td>
                             <td>
-                                {{ $client->ship ?? '' }}
+                                {{ $order->city ?? '' }}
                             </td>
                             <td>
-                                @can('product_show')
-                                    <a class="btn btn-xs btn-primary" href="{{route('product.show',$client->id)}}">
+                                {{ $order->statushi() ?? '' }}
+                            </td>
+                            <td>
+                                @can('order_show')
+                                    <a class="btn btn-xs btn-primary" href="{{route('order.show',$order->id)}}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('product_edit')
-                                    <a class="btn btn-xs btn-info" href="{{route('product.edit',$client->id)}}">
-                                        {{ trans('global.edit') }}
-                                    </a>
+                                @can('order_edit')
+                                        <form action="{{route('order.destroy',$order->id)}}" method="POST" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE" />
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-default" value="XÁC NHẬN">
+                                        </form>
                                 @endcan
 
-                                @can('product_delete')
-                                    <form action="{{route('product.destroy',$client->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+{{--                                @can('order_delete')--}}
+{{--                                    <form action="{{route('order.destroy',$order->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">--}}
+{{--                                        <input type="hidden" name="_method" value="DELETE">--}}
+{{--                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
+{{--                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">--}}
+{{--                                    </form>--}}
+{{--                                @endcan--}}
                             </td>
 
                         </tr>

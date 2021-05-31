@@ -34,7 +34,7 @@ class ProductVariantController extends Controller
     public function create()
     {
         abort_if(Gate::denies('product_variant_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $products=Product::all()->where('id','!=',2);
+        $products=Product::all();
         $colors=ProductColor::all();
         $sizes=ProductSize::all();
 //        print_r($sizes);

@@ -65,7 +65,7 @@ Route::Resource('province',ProvinceController::class);
 Route::Resource('district',DistrictController::class);
 Route::Resource('address',AddressController::class);
 Route::Resource('ward',WardController::class);
-Route::apiResource('order',OrderController::class);
+Route::Resource('order',OrderController::class);
 Route::Resource('payment',PaymentController::class)->middleware('auth');
 Route::Resource('shipment', \App\Http\Controllers\ShipmentController::class)->middleware('auth');
 //Route::apiResource('cart',CartController::class);

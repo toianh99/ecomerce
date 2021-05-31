@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ExportDetailResource;
 use App\Models\ExportDetail;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 
@@ -39,6 +40,29 @@ class ExportDetailController extends Controller
     public function store(Request $request)
     {
         $input = request()->all();
+        $product_id=$input['product_id'];
+        $size_id=$input['size_id'];
+        $color_id=$input['color_id'];
+
+        $product_variant=ProductVariant::all()->where('id_product','=',$product_id)->where('id_product_size','=',$size_id)->where('id_product_color','=',$color_id);
+        if (isset($product_variant)){
+            $quantity=0;
+            foreach($product_variant as $p){
+                $quantity=$p['quantity']-$input['quantity'];
+                $p->update([
+                    'quantity' =>$quantity
+                ]);
+            }
+            if ($quantity==0){
+                ProductVariant::create([
+                    'id_product'=>$input['product_id'],
+                    'id_product_color'=>$input['color_id'],
+                    'id_product_size'=>$input['size_id'],
+                    'quantity'=>$input['quantity']
+                ]);
+            }
+
+        }
         $input['export_id']=0;
         ExportDetail::create($input);
         return response()->json(['success'=>'Got Simple Ajax Request.']);

@@ -83,20 +83,6 @@
                                                         </p>
                                                     </div>
                                                     <div class="form-group {{ $errors->has('supplier') ? 'has-error' : '' }}">
-                                                        <label for="status">Nhà Cung Cấp</label>
-                                                        <select name="category_id" id="category" class="form-control ">
-                                                            <option value="" hidden >Vui Lòng Chọn Nhà Cung Cấp</option>
-                                                            @foreach($suppliers as $id => $supplier)
-                                                                <option value="{{ $supplier['id'] }}" }}>{{$supplier['name']}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @if($errors->has('category'))
-                                                            <p class="help-block">
-                                                                {{ $errors->first('category') }}
-                                                            </p>
-                                                        @endif
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('supplier') ? 'has-error' : '' }}">
                                                         <label for="status">Màu</label>
                                                         <select name="color_id" id="color_id" class="form-control ">
                                                             <option value="" hidden >Vui Lòng Chọn Màu</option>
@@ -189,7 +175,6 @@
                         product_id:product_id,
                         size_id:size_id,
                         color_id:color_id,
-                        supplier_id:supplier_id,
                         purchase_price:purchase_price
                     },
                     success:function(data){
