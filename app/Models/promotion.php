@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RoleUser extends Model
+class promotion extends Model
 {
     use HasFactory;
-    public $table='role_user';
-    public $timestamps=false;
-    protected $fillable=['user_id','role_id'];
-
+    protected $fillable=['code','discount','start_date','end_date','status'];
 }

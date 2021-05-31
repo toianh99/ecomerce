@@ -6,6 +6,7 @@ use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\CartDetail;
 use App\Models\Product;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -19,6 +20,7 @@ class CartDetailController extends Controller
      */
     public function index()
     {
+
         $userId=Auth::id();
         $cart=Cart::all()->where('user_id','=',$userId)->where('status','=',1);
         foreach ($cart as $c){
@@ -34,6 +36,15 @@ class CartDetailController extends Controller
      */
     public function create()
     {
+
+    }
+
+    public function updateQuantity(Request $request){
+       $cartDetails = CartDetail::all()->where('id','=',$request->id);
+        foreach ($cartDetails as $p){
+            $p->quantity = $request->quantity;
+            $p->save();
+        }
 
     }
 
@@ -71,6 +82,7 @@ class CartDetailController extends Controller
                         'product_id'=>$param['product_id'],
                         'quantity'=>$param['quantity'],
                         'price' =>$product->price,
+                        'discount'=>1,
                         'active'=>1
                     ]);
                 }
@@ -85,6 +97,9 @@ class CartDetailController extends Controller
                     'cart_id'=>$cart->id,
                     'product_id'=>$param['product_id'],
                     'quantity'=>$param['quantity'],
+                    'size_id'=>$param['size_id'],
+                    'color_id'=>$param['color_id'],
+                    'discount'=>1,
                     'price' =>$product->price,
                     'active'=>1
                 ]);
@@ -128,7 +143,7 @@ class CartDetailController extends Controller
      */
     public function update(Request $request, CartDetail $cartDetail)
     {
-        //
+        return $cartDetail->save();
     }
 
     /**

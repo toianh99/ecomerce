@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedStore | Ecommerce Website Design</title>
-    <link rel="stylesheet" href="{{secure_asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
+    <script src="{{ mix('js/app.js') }}"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -16,18 +17,28 @@
     <div class="container">
         <div class="navbar">
             <div class="logo">
-                <a href="{{route('web-home')}}"><img src="{{secure_asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
+                <a href="{{route('web-home')}}"><img src="{{asset('storage/photos/1/logo/60a8762d61011.png')}}" width="125px"></a>
             </div>
             <nav>
                 <ul id="MenuItems">
-                    <li><a href="{{route('web-home')}}">Home</a></li>
-                    <li><a href="{{route('api-product.index')}}">Products</a></li>
-{{--                    <li><a href="">About</a></li>--}}
-{{--                    <li><a href="">Contact</a></li>--}}
-{{--                    <li><a href="account.html">Account</a></li>--}}
+                    <li><a href="{{route('web-home')}}">Trang Chủ</a></li>
+                    <li><a href="{{route('api-product.index')}}">Sản Phẩm</a></li>
+
                 </ul>
             </nav>
-            <a href="cart.html"><img src="{{secure_asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <a href="{{route('cart.index')}}"><img src="{{asset('storage/photos/1/cart/60a8773387b3b.png')}}" width="30px" height="30px"></a>
+            <div>
+                <span id="count_cart"></span>
+            </div>
+            @if(Auth::check())
+               <i style="margin-left:20px;" class="fa fa-user"></i> <a  href="{{route('web.login.index')}}">{{Auth::user()->name}}</a>
+                <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+                <a href="" style="margin-left:20px;" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">Đăng xuất</a>
+            @else
+                <a style="margin-left:20px;"href="{{route('web.login.index')}}">Đăng nhập/Đăng kì</a>
+            @endif
             <img src="images/menu.png" class="menu-icon"
                  onclick="menutoggle()">
         </div>
@@ -40,7 +51,7 @@
                 <a href="" class="btn">Explore Now &#8594;</a>
             </div>
             <div class="col-2">
-                <img src="{{secure_asset('storage/photos/1/home/slide.png')}}">
+                <img src="{{asset('storage/photos/1/home/slide.png')}}">
             </div>
         </div>
     </div>
@@ -68,155 +79,25 @@
 <div class="small-container">
     <h2 class="title">Featured Products</h2>
     <div class="row">
-        <div class="col-4">
-            <a href="products_detal.html"><img src="images/product-1.jpg"></a>
-            <a href="products_detal.html"><h4>Red Printed T-Shirt</h4></a>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
+        @foreach($products as $product)
+            {{--            {{print_r($product)}}--}}
+            {{--            {{die()}}--}}
+            <div class="col-4">
+                <a href="{{route('product-detail')}}}?id={{$product->id}}">
+                    <img src="{{$product->default_image}}">
+                    <h4>{{$product->name_product}}</h4>
+                </a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>{{$product->price}}</p>
+
             </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-2.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-3.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-4.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-    </div>
-    <h2 class="title">Latest Products</h2>
-    <div class="row">
-        <div class="col-4">
-            <img src="images/product-5.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-6.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-7.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-8.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <img src="images/product-9.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-10.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-11.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
-        <div class="col-4">
-            <img src="images/product-12.jpg">
-            <h4>Red Printed T-Shirt</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>$50.00</p>
-        </div>
+        @endforeach
     </div>
 </div>
 <!-- ------------ offer -------------- -->
@@ -293,19 +174,19 @@
     <div class="small-container">
         <div class="row">
             <div class="col-5">
-                <img src="{{secure_asset('storage/photos/1/brand/logo-godrej.png')}}">
+                <img src="{{asset('storage/photos/1/brand/logo-godrej.png')}}">
             </div>
             <div class="col-5">
-                <img src="{{secure_asset('storage/photos/1/brand/logo-oppo.png')}}">
+                <img src="{{asset('storage/photos/1/brand/logo-oppo.png')}}">
             </div>
             <div class="col-5">
-                <img src="{{secure_asset('storage/photos/1/brand/logo-coca-cola.png')}}">
+                <img src="{{asset('storage/photos/1/brand/logo-coca-cola.png')}}">
             </div>
             <div class="col-5">
-                <img src="{{secure_asset('storage/photos/1/brand/logo-paypal.png')}}">
+                <img src="{{asset('storage/photos/1/brand/logo-paypal.png')}}">
             </div>
             <div class="col-5">
-                <img src="{{secure_asset('storage/photos/1/brand/logo-philips.png')}}">
+                <img src="{{asset('storage/photos/1/brand/logo-philips.png')}}">
             </div>
         </div>
     </div>
@@ -319,12 +200,12 @@
                 <h3>Download Our App</h3>
                 <p>Download App for Android and ios mobile phone</p>
                 <div class="app-logo">
-                    <img src="{{secure_asset('storage/photos/1/footer/google.png')}}">
-                    <img src="{{secure_asset('storage/photos/1/footer/apple.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/google.png')}}">
+                    <img src="{{asset('storage/photos/1/footer/apple.png')}}">
                 </div>
             </div>
             <div class="footer-col-2">
-                <img src="{{secure_asset('storage/photos/1/footer/logo_footer.png')}}">
+                <img src="{{asset('storage/photos/1/footer/logo_footer.png')}}">
                 <p>Our Purpose Is To Sustainably Make the Pleasure and
                     Benefits of Sports Accessible to the Many</p>
             </div>
@@ -367,6 +248,22 @@
             MenuItems.style.maxHeight = "0px";
         }
     }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    function onLoadCart(){
+        $.ajax({
+            type:'GET',
+            url:"{{route('cartDetail.index')}}",
+            success:function (data) {
+                console.log(data)
+                document.getElementById('count_cart').innerText=data.length;
+            }
+        });
+    }
+    onLoadCart();
 
 </script>
 </body>

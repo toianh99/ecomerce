@@ -11,7 +11,7 @@
                 @csrf
                 <div class="form-group {{ $errors->has('date') ? 'has-error' : '' }}">
                     <label for="title">Ngày Nhập</label>
-                    <input type="date" id="date_import" name="date_import" class="form-control" value="{{ old('date_import', isset($brand) ? $brand->name_brand : '') }}" >
+                    <input type="date" id="date_export" name="date_export" class="form-control" value="{{ old('date_export', isset($brand) ? $brand->name_brand : '') }}" >
                     @if($errors->has('date'))
                         <p class="help-block">
                             {{ $errors->first('date') }}
@@ -70,12 +70,12 @@
                                                         </p>
                                                     @endif
                                                 </div>
-                                                <div class="form-group {{ $errors->has('purchase_price') ? 'has-error' : '' }}">
+                                                <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : '' }}">
                                                     <label for="title">Giá Nhập</label>
-                                                    <input type="number" id="purchase_price" name="purchase_price" class="form-control" value="{{ old('purchase_price', isset($brand) ? $brand->name_brand : '') }}">
-                                                    @if($errors->has('purchase_price'))
+                                                    <input type="number" id="sale_price" name="sale_price" class="form-control" value="{{ old('sale_price', isset($brand) ? $brand->name_brand : '') }}">
+                                                    @if($errors->has('sale_price'))
                                                         <p class="help-block">
-                                                            {{ $errors->first('purchase_price') }}
+                                                            {{ $errors->first('sale_price') }}
                                                         </p>
                                                     @endif
                                                     <p class="helper-block">
@@ -138,8 +138,9 @@
                                     <td>Tên Sản Phẩm</td>
                                     <td>Size</td>
                                     <td>Màu</td>
-                                    <td>Giá Nhập</td>
+
                                     <td>Số Lượng</td>
+                                    <td>Giá Nhập</td>
                                     <td></td>
                                 </tr>
                                 </thead>
@@ -170,7 +171,7 @@
             var quantity=document.getElementById('quantity').value;
             var size_id=document.getElementById('size_id').value;
             var color_id=document.getElementById('color_id').value;
-            var purchase_price= document.getElementById('purchase_price').value;
+            var sale_price= document.getElementById('sale_price').value;
             var supplier_id=document.getElementById('supplier_id').value;
             if ($("#save").val()=='Save'){
                 $.ajax({
@@ -182,7 +183,7 @@
                         size_id:size_id,
                         color_id:color_id,
                         supplier_id:supplier_id,
-                        purchase_price:purchase_price
+                        sale_price:sale_price
                     },
                     success:function(data){
                         $("#exampleModal").modal('hide');
@@ -200,7 +201,7 @@
                         size_id: size_id,
                         color_id: color_id,
                         supplier_id: supplier_id,
-                        purchase_price: purchase_price
+                        sale_price: sale_price
                     },
                     success: function (data) {
                         $("#exampleModal").modal('hide');
@@ -221,7 +222,7 @@
                 type: 'GET',
                 url:"{{route('exportDetail.index')}}",
                 success:function (data){
-                    // console.log(data);
+                     console.log(data);
                     ids=data;
                     data.forEach(d=>{
                         // console.log(d.quantity);
@@ -231,7 +232,7 @@
                         tb+='<td>'+d.size+'</td>';
                         tb+='<td>'+d.color+'</td>';
                         tb+='<td>'+d.quantity+'</td>';
-                        tb+='<td>'+d.purchase_price+'</td>';
+                        tb+='<td>'+d.sale_price+'</td>';
                         tb+="<td><input type='button' value='edit' class=\" m-1 btn btn-xs btn-info\" onclick='onEdit("+d.id+")'><input type='button' value='Delete' class=\"btn btn-xs btn-danger\" onclick='onDelete("+d.id+")'></td>";
                         tb+='</tr>';
                     });
@@ -248,7 +249,7 @@
                     document.getElementById('quantity').value=data.quantity;
                     document.getElementById('size_id').value=data.size_id;
                     document.getElementById('color_id').value=data.color_id;
-                    document.getElementById('purchase_price').value=data.purchase_price;
+                    document.getElementById('sale_price').value=data.sale_price;
                     document.getElementById('product_id').value=data.product_id;
                     $('#save').val('edit');
                     $(".btn-submit").click(function () {
@@ -287,13 +288,13 @@
         }
 
         function onSubmit(){
-            var date_import=document.getElementById('date_import').value;
+            var date_export=document.getElementById('date_export').value;
             var supplier_id=document.getElementById('supplier_id').value;
             $.ajax({
                 type:'POST',
                 url:"{{route('export.index')}}",
                 data: {
-                    import_date:date_import,
+                    export_date:date_export,
                     supplier_id:supplier_id
                 },
                 success:function (data){

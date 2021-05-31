@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\ProductResource;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
@@ -27,6 +29,8 @@ class ProductApiController extends Controller
         $keyword=Arr::get($searchParams,'keyword','');
         //gọi query product
         $query=Product::query();
+
+
 
         if (!empty($keyword)) {
             $query->where('name_product', 'LIKE', '%' . $keyword . '%');
@@ -79,12 +83,14 @@ class ProductApiController extends Controller
         if (!empty($keyword)) {
             $query->where('name_product', 'LIKE', '%' . $keyword . '%');
         }
+        $comment=CommentResource::collection(Comment::query()->where('product_id','=',$id)->paginate(5));
         $product_variant=ProductVariant::all()->where('id_product','=',$id);
         $products=$query->paginate($limmit);
         $products->appends(['id'=>$id]);
+        $comment->appends(['id'=>$id]);
 //        print_r($product);
 //        die();
-        return view('web.product_detail',compact('product','products','product_variant'));
+        return view('web.product_detail',compact('product','products','product_variant','comment'));
     }
 
     public function detail(Request  $request){

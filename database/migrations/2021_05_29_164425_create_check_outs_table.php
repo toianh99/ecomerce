@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommentsTable extends Migration
+class CreateCheckOutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('check_outs', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
-            $table->integer('user_id');
-            $table->integer('product_id');
-            $table->integer('product_point_id')->default(0);
+            $table->String('fullName');
+            $table->String('phoneNumber');
+            $table->text('address');
+            $table->String('email');
+            $table->integer('payment');
+            $table->integer('card_id');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('check_outs');
     }
 }

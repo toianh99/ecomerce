@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->decimal('total');
+            $table->integer('status');
             $table->timestamps();
         });
     }

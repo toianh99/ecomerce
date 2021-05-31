@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\SupplierController;
+use App\Models\Product;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -24,7 +31,19 @@ use App\Http\Controllers\CartController;
 */
 
 Route::get('/', function () {
-    return view('web/index');
+//    $searchParams= $request->all();
+    //kiểm tra biết limit
+//    $limmit=Arr::get($searchParams,'limit',static::ITEM_PER_PAGE);
+    //kiểm tra keyword search
+//    $keyword=Arr::get($searchParams,'keyword','');
+//    //gọi query product
+    $query=Product::query();
+
+    if (!empty($keyword)) {
+        $query->where('name_product', 'LIKE', '%' . $keyword . '%');
+    }
+    $products=$query->paginate(12);
+    return view('web/index',compact('products'));
 })->name('web-home');
 Route::get('/admin', function () {
     return view('home');
@@ -60,7 +79,6 @@ Route::get('/test',[\App\Http\Controllers\TestController::class,'index'])->middl
 Route::post('/test',[\App\Http\Controllers\TestController::class,'create'])->middleware('auth')->name('test.create');
 Route::Resource('import',\App\Http\Controllers\ImportController::class)->middleware('auth');
 Route::Resource('export',\App\Http\Controllers\ExportController::class)->middleware('auth');
-Route::Resource('supplier',\App\Http\Controllers\SupplierController::class)->middleware('auth');
 Route::Resource('importDetail',\App\Http\Controllers\ImportDetailController::class)->middleware('auth');
 Route::post('/importDetail/updateID',[\App\Http\Controllers\ImportDetailController::class,'updateID'])->middleware('auth');
 Route::Resource('exportDetail',\App\Http\Controllers\ExportDetailController::class)->middleware('auth');
@@ -72,6 +90,19 @@ Route::Resource('cartDetail',\App\Http\Controllers\CartDetailController::class);
 Route::get('web/login',[\App\Http\Controllers\LoginController::class,'index'])->name('web.login.index');
 Route::post('web/login',[\App\Http\Controllers\LoginController::class,'login'])->name('web.login');
 Route::post('web/register',[\App\Http\Controllers\RegisterController::class,'register'])->name('web.register');
+Route::Resource('checkout',CheckOutController::class)->middleware('auth');
+Route::Resource('supplier',SupplierController::class)->middleware('auth');
+Route::Resource('cart',CartController::class)->middleware('auth');
+Route::post('/login/comment',[\App\Http\Controllers\LoginCommentController::class,'login'])->name('login.comment');
+Route::get('/login/comment',[\App\Http\Controllers\LoginCommentController::class,'index'])->name('login.comment');
+Route::post('cartDetail/updateQuantity',[\App\Http\Controllers\CartDetailController::class,'updateQuantity'])->middleware('auth');
+Route::Resource('comment',CommentController::class);
+Route::Resource('promotion',PromotionController::class);
+Route::post('promotion/search',[PromotionController::class,'search']);
+Route::post('cart/save',[CartController::class,'save']);
+Route::post('/check/save',[CheckOutController::class,'save'])->name('checkout.save');
+Route::get('/success_order',[HomeController::class,'success'])->name('success');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');

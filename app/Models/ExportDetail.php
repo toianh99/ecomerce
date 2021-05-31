@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Intervention\Image\Size;
+
 
 class ExportDetail extends Model
 {
@@ -24,6 +24,6 @@ class ExportDetail extends Model
     }
 
     public function size(){
-        return $this->belongsTo(Size::class,'size_id');
+        return $this->belongsTo(ProductSize::class,'size_id');
     }
 }

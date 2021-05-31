@@ -44,7 +44,7 @@ class ExportController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authen('import_create');
+        $this->authen('export_create');
         $user_id = Auth::user()->id;
         $status=1;
         $req = $request->all();
@@ -55,11 +55,11 @@ class ExportController extends Controller
 //            $importDeatil['import_id']=
 //        }
 //        $importDeatils;
-        $import =Import::create([
+        $import =Export::create([
             'user_id'=>$user_id,
             'status'=>$status,
             'supplier_id'=>$req['supplier_id'],
-            'import_date'=>$req['import_date']
+            'export_date'=>$req['export_date']
         ]);
         return response()->json($import);
     }

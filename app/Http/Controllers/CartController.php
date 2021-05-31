@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -12,9 +14,20 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function save(Request $request){
+        $idUser = Auth::user()->id;
+        $cart = Cart::all()->where('user_id','=',$idUser)->Where('status','=',0);
+        foreach ($cart as $c) {
+            $c->save();
+        }
+        return response()->json($cart);
+    }
+
     public function index()
     {
-        return view('web.cart');
+        $shipment = Shipment::all();
+        return view('web.cart',compact('shipment'));
     }
 
     /**

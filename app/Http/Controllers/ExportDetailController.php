@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ExportDetailResource;
 use App\Models\ExportDetail;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
@@ -16,7 +17,7 @@ class ExportDetailController extends Controller
     public function index()
     {
         $this->authen('export_access');
-        return response()->json(ExportDetail::all()->where('export_id','=',0));
+        return response()->json(ExportDetailResource::collection(ExportDetail::all()->where('export_id','=',0)));
     }
 
     /**

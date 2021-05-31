@@ -56,7 +56,7 @@
                                 {{ $export->user->name ?? '' }}
                             </td>
                             <td>
-                                {{$export->import_date}}
+                                {{$export->export_date}}
                             </td>
                             <td>
                                 {{--                                {{ $brand->user->name ?? '' }}--}}
