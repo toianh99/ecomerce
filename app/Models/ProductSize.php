@@ -10,4 +10,8 @@ class ProductSize extends Model
     protected $fillable=['name_product_size','description_product_size','code_size'];
     public $timestamps=false;
     use HasFactory;
+
+    public function cartDetail(){
+        return $this->hasMany(CartDetail::class,'size_id',id);
+    }
 }

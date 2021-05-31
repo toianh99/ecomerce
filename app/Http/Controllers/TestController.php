@@ -27,7 +27,7 @@ class TestController extends Controller
             $request->file('upload')->storeAs('public/uploads', $filenametostore);
 
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = secure_asset('storage/uploads/'.$filenametostore);
+            $url = asset('storage/uploads/'.$filenametostore);
             $msg = 'Image successfully uploaded';
             $re = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
 

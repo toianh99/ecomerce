@@ -189,7 +189,17 @@
             LoginForm.style.transform = "translateX(300px)";
             Indicator.style.transform = "translateX(0px)";
         }
-
+        function onLoadCart(){
+            $.ajax({
+                type:'GET',
+                url:"{{route('cartDetail.index')}}",
+                success:function (data) {
+                    console.log(data)
+                    document.getElementById('count_cart').innerText=data.length;
+                }
+            });
+        }
+        onLoadCart();
 
     </script>
 

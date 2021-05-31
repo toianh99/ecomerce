@@ -521,6 +521,30 @@
                     }
                 });
         });
+        $('#check_in').click(  function (){
+            var size_id = document.getElementById('size_id').value;
+            var color_id= document.getElementById('color_id').value;
+            var quantity=document.getElementById('quantity').value;
+            var product_id=document.getElementById('product_id').value;
+            console.log(quantity);
+            $.ajax({
+                type:'POST',
+                url:"{{route('cartDetail.store')}}",
+                data:{
+                    size_id:size_id,
+                    product_id:product_id,
+                    color_id:color_id,
+                    quantity:quantity,
+                },
+                success:function (data) {
+                    if (data.fail){
+                        window.location.replace("{{route('web.login.index')}}");
+                    }else if (data.success){
+                        window.location.replace("{{route('cart.index')}}");
+                    }
+                }
+            });
+        });
         function onLoadCart(){
             $.ajax({
                 type:'GET',
