@@ -49,7 +49,7 @@
                                 @endcan
                                 @can('user_access')
                                     <li class="nav-item">
-                                        <a href="" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                        <a href="{{route('user.index')}}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
                                             <i class="fa-fw fas fa-user">
 
                                             </i>

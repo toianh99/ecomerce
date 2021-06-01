@@ -73,6 +73,22 @@
                         {{ trans('cruds.brand.fields.title_helper') }}
                     </p>
                 </div>
+                <div class="form-group {{ $errors->has('default_image') ? 'has-error' : '' }}">
+                    <label for="title">{{ trans('cruds.product.fields.default_image') }}</label>
+                    <div class="input-group">
+                        <input type="button" id="lfm" data-input="thumbnail" data-preview="holder" value="Upload">
+                        <input id="thumbnail" class="form-control" type="text" name="image1" {{ old('price', isset($product) ? $product->image1 : '') }}>
+                    </div>
+                    <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+                    @if($errors->has('image1'))
+                        <p class="help-block">
+                            {{ $errors->first('image1') }}
+                        </p>
+                    @endif
+                    <p class="helper-block">
+                        {{ trans('cruds.brand.fields.title_helper') }}
+                    </p>
+                </div>
                 <div class="form-group {{ $errors->has('overview') ? 'has-error' : '' }}">
                     <label for="title">{{ trans('cruds.product.fields.overview') }}</label>
                     <textarea id="overview" class="form-control " name="overview" value="{{ old('overview', isset($product) ? $product->overview : '') }}" ></textarea>

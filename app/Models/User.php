@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use App\Models\Role as Roles;
 
 class User extends Authenticatable
 {
@@ -61,7 +58,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Roles::class);
+        return $this->belongsToMany(Role::class);
     }
 
 

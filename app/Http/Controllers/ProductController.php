@@ -96,6 +96,10 @@ class ProductController extends Controller
                 'description'=>$params['description'],
                 'status'=>$params['status_id'],
                 'overview'=>$params['overview'],
+                'image1'=>$params['image1'],
+                'image2'=>$params['image2'],
+                'image3'=>$params['image3'],
+                'image4'=>$params['image4'],
             ]);
             return redirect()->route('product.index');
 

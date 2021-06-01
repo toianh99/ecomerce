@@ -102,6 +102,8 @@ Route::post('promotion/search',[PromotionController::class,'search']);
 Route::post('cart/save',[CartController::class,'save']);
 Route::post('/check/save',[CheckOutController::class,'save'])->name('checkout.save');
 Route::get('/success_order',[HomeController::class,'success'])->name('success');
+Route::Resource('user',\App\Http\Controllers\UserController::class)->middleware('auth');
+
 
 Auth::routes();
 
